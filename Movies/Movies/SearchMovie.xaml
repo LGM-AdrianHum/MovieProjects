@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Movies.SearchMoviePane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:movies="clr-namespace:Movies"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <movies:MovieViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid>
+            <Grid Background="{StaticResource HeaderBackgroundBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="93" />
+                    <ColumnDefinition Width="55" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" MinHeight="22" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" MinHeight="22" />
+                    <RowDefinition Height="34" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="MovieName"
+                         Grid.Column="0"
+                         Margin="0,0,4,0"
+                         Background="Transparent"
+                         CharacterCasing="Upper"
+                         Text="{Binding SearchMovieName}" />
+                <TextBox x:Name="MovieYear"
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="0,0,4,0"
+                         Background="Transparent"
+                         CharacterCasing="Upper"
+                         Text="{Binding SearchMovieYear}" />
+                <Button x:Name="SearchButton"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Click="SearchButton_OnClick"
+                        Content="Search" />
+                <ListBox Grid.Row="1"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="3"
+                         Margin="6,3,6,0"
+                         Background="Transparent"
+                         DisplayMemberPath="MovieFormattedName"
+                         x:Name="SearchResultBox"
+                         
+                         ItemsSource="{Binding AllSearchResults,
+                                               Mode=OneWay,
+                                               UpdateSourceTrigger=PropertyChanged}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         SelectedItem="{Binding SelectedSearch,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Margin="6,0"
+                           FontSize="16"
+                           Text="{Binding SelectedSearch.Overview,
+                                          Mode=OneWay,
+                                          UpdateSourceTrigger=PropertyChanged}"
+                           TextAlignment="Justify"
+                           TextWrapping="WrapWithOverflow" />
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

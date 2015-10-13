@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="1,0" EndPoint=".5,1">
+        <GradientStop Offset="1" Color="#006699" />
+        <GradientStop Offset="0.5" Color="#80A8CC" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="HeaderBackgroundOpacityMask" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#FFFFFFFF" />
+        <GradientStop Offset="0.667" Color="#FFFFFFFF" />
+        <GradientStop Offset="1" Color="#00FFFFFF" />
+    </LinearGradientBrush>
+</ResourceDictionary>

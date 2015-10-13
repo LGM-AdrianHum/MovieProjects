@@ -1,0 +1,117 @@
+﻿<metro:MetroWindow x:Class="TvEpisodeNamer.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:tvEpisodeNamer="clr-namespace:TvEpisodeNamer"
+                   Title="MainWindow"
+                   Width="525"
+                   Height="350">
+    <Window.DataContext>
+        <tvEpisodeNamer:TvEpisodesViewModel />
+    </Window.DataContext>
+    <metro:MetroWindow.Background>
+        <ImageBrush x:Name="BackBrush" ImageSource="pack://application:,,,/images/background.jpg" />
+    </metro:MetroWindow.Background>
+
+
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl>
+            <metro:Flyout x:Name="CreateShowFlyout"
+                          Width="300"
+                          Header="Create New Show"
+                          Position="Right">
+                <tvEpisodeNamer:CreateNewShow DataContext="{Binding}" />
+            </metro:Flyout>
+            <metro:Flyout x:Name="Flyout"
+                          Width="300"
+                          Header="TV Shows"
+                          Position="Right">
+                <ListBox x:Name="TvShowListBox"
+                         ItemsSource="{Binding AllDirectoriesView,
+                                               Mode=OneWay,
+                                               UpdateSourceTrigger=PropertyChanged}"
+                         MouseDoubleClick="TvShowListBox_OnMouseDoubleClick" />
+            </metro:Flyout>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" MinHeight="22" />
+            </Grid.RowDefinitions>
+            <tvEpisodeNamer:DirectorySelector x:Name="DirectorySelector" FileSelected="DirectorySelector_OnFileSelected" />
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" MinHeight="22" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" MinHeight="22" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="SelectedShow"
+                         Grid.Row="0"
+                         GotFocus="SelectedShow_OnGotFocus"
+                         Text="{Binding SelectedShowName}">
+                    <TextBox.Background>
+                        <SolidColorBrush Opacity="0.25" Color="Azure" />
+                    </TextBox.Background>
+
+                </TextBox>
+                <ListBox x:Name="SeasonListBox"
+                         Grid.Row="1"
+                         ItemsSource="{Binding AllSeasons,
+                                               Mode=OneWay,
+                                               UpdateSourceTrigger=PropertyChanged}"
+                         SelectionChanged="SeasonListBox_OnSelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+
+                            <WrapPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" IsItemsHost="True" />
+
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.Background>
+                        <SolidColorBrush Opacity="0.25" Color="Azure" />
+                    </ListBox.Background>
+
+                </ListBox>
+                <ListBox x:Name="EpisodeListBox"
+                         Grid.Row="2"
+                         ItemsSource="{Binding AllEpisodesView,
+                                               Mode=OneWay,
+                                               UpdateSourceTrigger=PropertyChanged}"
+                         PreviewMouseDoubleClick="EpisodeListBox_OnPreviewMouseDoubleClick"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         SelectionChanged="EpisodeListBox_OnSelectionChanged">
+                    <ListBox.Background>
+                        <SolidColorBrush Opacity="0.25" Color="Azure" />
+                    </ListBox.Background>
+
+                </ListBox>
+            </Grid>
+            <StackPanel Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Width="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                                       AncestorType={x:Type ScrollViewer}},
+                                        Path=ActualWidth}"
+                        Orientation="Horizontal">
+                <Button Click="ButtonBase_OnClick"
+                        CommandParameter="Create"
+                        Content="Create Show" />
+                <Button Click="ButtonBase_OnClick"
+                        CommandParameter="Update"
+                        Content="Update Show" />
+                <Button x:Name="MoveTarget" Content="" />
+                <ProgressBar Width="75" Value="{Binding ProgressValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="{Binding Doing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</metro:MetroWindow>
