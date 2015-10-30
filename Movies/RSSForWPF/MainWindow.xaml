@@ -1,0 +1,111 @@
+﻿<metro:MetroWindow x:Class="WPFRSS.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:local="clr-namespace:WPFRSS"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   Title="MainWindow"
+                   Width="600"
+                   Height="350">
+    <Window.Resources>
+        <local:FileSizeToStringConverter x:Key="FileSizeToStringConverter" />
+    </Window.Resources>
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl>
+            <metro:Flyout x:Name="ViewSourceFlyout"
+                          Width="450"
+                          Header="XML Source"
+                          Position="Left">
+                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{Binding ResultString,
+                                              Mode=TwoWay,
+                                              UpdateSourceTrigger=PropertyChanged}"
+                               TextWrapping="WrapWithOverflow" />
+                </ScrollViewer>
+            </metro:Flyout>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+    <metro:MetroWindow.LeftWindowCommands>
+        <metro:WindowCommands>
+            <Button Click="Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                              Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cupcake}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="deploy cupcakes" />
+                </StackPanel>
+            </Button>
+        </metro:WindowCommands>
+    </metro:MetroWindow.LeftWindowCommands>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" MinWidth="22" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="12" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" MinHeight="12" />
+        </Grid.RowDefinitions>
+        <TextBox Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Text="{Binding Query,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Column="2"
+                Click="HandleClick"
+                Content="Go" />
+
+        <DataGrid Grid.Row="1"
+                  Grid.ColumnSpan="3"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding AllResultsView,
+                                        Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged}"
+                  PreviewMouseDoubleClick="DataGrid_PreviewMouseDoubleClick"
+                  RowStyle="{StaticResource HighlightRow}"
+                  SelectedItem="{Binding SelectedTorrent,
+                                         Mode=TwoWay,
+                                         UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding Download}" Header="..." />
+                <DataGridTextColumn Binding="{Binding Title}" Header="Title" />
+                <DataGridTextColumn Binding="{Binding Length, Converter={StaticResource FileSizeToStringConverter}}" Header="Size">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Seeds}" Header="Seeds">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Peers}" Header="Peers">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox Grid.Row="2" Text="{Binding UploadPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Row="2"
+                Grid.Column="2"
+                Content="Upload" />
+    </Grid>
+</metro:MetroWindow>
