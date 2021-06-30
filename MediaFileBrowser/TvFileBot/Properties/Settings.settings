@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TvFileBot.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WorkingDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">q:\CacheData</Value>
+    </Setting>
+    <Setting Name="WorkingDrive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">q:\</Value>
+    </Setting>
+    <Setting Name="RawMovieDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">k:\BtSync.Archive\movie</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

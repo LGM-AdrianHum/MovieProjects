@@ -1,0 +1,118 @@
+﻿<controls:MetroWindow
+    x:Class="TvFileBot.MovieScanner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TvFileBot"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:TvFileBot.ViewModel"
+    Title="MovieScanner"
+    Width="828.902"
+    Height="300"
+    mc:Ignorable="d">
+    <controls:MetroWindow.Resources />
+    <Window.DataContext>
+        <viewModel:MovieScannerVm />
+    </Window.DataContext>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Button Command="{Binding RefreshWorkingDirectory}">
+                <Rectangle
+                    Width="20"
+                    Height="20"
+                    Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Command="{Binding FirstItemGoogle}">
+                <Rectangle
+                    Width="20"
+                    Height="20"
+                    Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cupcake}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="350" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" MinWidth="350" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Grid.Column="0" />
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Content="F" />
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            ItemTemplate="{DynamicResource MovieFileTemplates}"
+            ItemsSource="{Binding AllMoviesView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedMovieItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Row="0" Grid.Column="2" />
+        <Button
+            Grid.Row="0"
+            Grid.Column="3"
+            Content="S" />
+
+
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            ItemTemplate="{DynamicResource MovieGoogleResultTemplates}"
+            ItemsSource="{Binding SelectedMovieItem.AllGoogleResults, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedMovieItem.GoogleSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MaxWidth="90" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" MaxWidth="90" />
+            </Grid.ColumnDefinitions>
+            <Button 
+                MaxWidth="90"
+                MinWidth="60"
+                Command="{Binding GetTmdbData}"
+                Grid.Row="0" Content="{Binding SelectedMovieItem.GoogleSearchResult.TmDbId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock 
+                FontSize="20"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding SelectedMovieData.Title, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--<Button Grid.Row="0" Grid.Column="2" Content="Save/ Pack" Command="{Binding SaveAndPack}"></Button>-->
+            <TextBlock 
+                TextWrapping="WrapWithOverflow"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding SelectedMovieData.Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+    </Grid>
+
+</controls:MetroWindow>

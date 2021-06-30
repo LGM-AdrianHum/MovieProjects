@@ -1,0 +1,582 @@
+﻿<controls:MetroWindow
+    x:Class="MediaFileBrowser.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mediaFileBrowser="clr-namespace:MediaFileBrowser"
+    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    xmlns:viewModel="clr-namespace:MediaFileBrowser.ViewModel"
+    xmlns:wincontrols="clr-namespace:MediaFileBrowser.Controls"
+    x:Name="MainWin"
+    Title="Movie Library Window"
+    Width="1029.237"
+    Height="350"
+    Icon="pack://application:,,,/Images/movie.ico"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:MainViewModel />
+    </Window.DataContext>
+    <Window.Background>
+
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#66141414" />
+            <GradientStop Offset="0.25" Color="#FF2E2E2E" />
+            <GradientStop Offset=".97" Color="#FF141414" />
+            <GradientStop Offset="1" Color="Black" />
+        </LinearGradientBrush>
+
+    </Window.Background>
+
+    <Window.InputBindings>
+        <KeyBinding Key="F9" Command="{Binding UpdateDetails}" />
+        <KeyBinding Key="F8" Command="{Binding SearchForMovieDetails}" />
+        <KeyBinding
+            Key="F5"
+            Command="{Binding RenameParentFolder}"
+            CommandParameter="collection" />
+        <KeyBinding
+            Key="F6"
+            Command="{Binding RenameParentFolder}"
+            CommandParameter="letter" />
+        <KeyBinding
+            Key="F6"
+            Command="{Binding MakeFolderFromFile}"
+            Modifiers="Shift" />
+    </Window.InputBindings>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <DockPanel.Background>
+                <ImageBrush ImageSource="{Binding BackDropImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel.Background>
+
+            <Menu
+                FontFamily="pack://application:,,,/Fonts/#Roboto"
+                FontSize="16"
+                FontWeight="Thin"
+                DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem.Icon>
+                        <Rectangle
+                            Width="16"
+                            Height="16"
+                            Fill="White">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_folder}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+
+                    </MenuItem.Icon>
+                    <MenuItem Header="Refresh">
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Width="16"
+                                Height="16"
+                                Fill="White">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="Exit">
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Width="16"
+                                Height="16"
+                                Fill="White">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_window_casement_closed}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border
+                    Grid.Column="0"
+                    Margin="0,0,22,0"
+                    Background="DarkGreen">
+                    <TextBlock
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        FontFamily="pack://application:,,,/Fonts/#Roboto"
+                        FontSize="22"
+                        FontWeight="Thin"
+                        Text="Movie Library Links :">
+                        <TextBlock.Effect>
+                            <DropShadowEffect />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </Border>
+                <ListBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Background="Transparent"
+                    ItemTemplate="{StaticResource ShortCutsTemplate}"
+                    ItemsPanel="{StaticResource ShortcutsItemsPanelTemplate}"
+                    ItemsSource="{Binding ShortCuts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    SelectedItem="{Binding SelectedShortCut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Row="1" Grid.Column="2">
+                    <Rectangle
+                        Width="26"
+                        Height="26"
+                        Fill="LimeGreen">
+                        <Rectangle.Effect>
+                            <DropShadowEffect Color="#FF888888" />
+                        </Rectangle.Effect>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_sidebar_left_collapse}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+
+                </Button>
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    FontFamily="pack://application:,,,/Fonts/#Roboto"
+                    FontSize="22"
+                    FontWeight="Thin"
+                    Text="{Binding SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+            <Border DockPanel.Dock="Bottom">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#66141414" />
+                        <GradientStop Offset="0.25" Color="#FF2E2E2E" />
+                        <GradientStop Offset=".97" Color="#FF141414" />
+                        <GradientStop Offset="1" Color="Black" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <UniformGrid Columns="10">
+                    <UniformGrid.Style>
+                        <Style>
+                            <Style.Resources>
+                                <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                            </Style.Resources>
+                        </Style>
+                    </UniformGrid.Style>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding RenameFolderOrFile}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="3,0,10,0"
+                                VerticalAlignment="Center"
+                                Foreground="RosyBrown"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Text="F2" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontWeight="Regular"
+                                Text="{Binding RenameType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=Cannot Rename}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,0,2,0"
+                                Text="{Binding RenameName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextAlignment="Left"
+                                TextWrapping="WrapWithOverflow" />
+                        </Grid>
+                    </Button>
+                    <Button>F3 Remote Play</Button>
+                    <Button>F4 Edit Details</Button>
+                    <Button
+                        HorizontalContentAlignment="Stretch"
+                        Command="{Binding RenameParentFolder}"
+                        CommandParameter="collection">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="3,0,10,0"
+                                VerticalAlignment="Center"
+                                Foreground="RosyBrown"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Text="F5" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontWeight="Regular"
+                                Text="Move To Collection" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Text="{Binding CollectionName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextAlignment="Justify"
+                                TextWrapping="WrapWithOverflow" />
+                        </Grid>
+                    </Button>
+                    <Button
+                        HorizontalContentAlignment="Stretch"
+                        Command="{Binding RenameParentFolder}"
+                        CommandParameter="letter">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="3,0,10,0"
+                                VerticalAlignment="Center"
+                                Foreground="RosyBrown"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Text="F6" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontWeight="Regular"
+                                Text="Move To Folder" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="2"
+                                Width="26"
+                                Height="26"
+                                Margin="10,0,3,0"
+                                Background="RosyBrown"
+                                CornerRadius="13">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="22"
+                                    FontWeight="Bold"
+                                    Text="{Binding FolderLetter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Border>
+                        </Grid>
+
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding SearchForMovieDetails}">
+                        <TextBlock>
+                            <Run
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="F8" />
+                            <Run FontWeight="Regular" Text=": Delete" />
+                        </TextBlock>
+                    </Button>
+                    <Button Command="{Binding UpdateDetails}">
+                        <TextBlock>
+                            <Run
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="F9" />
+                            <Run FontWeight="Regular" Text=": Update MovieDetails" />
+                        </TextBlock>
+                    </Button>
+                    <Button Command="{Binding DeleteFileOrFolder}">
+                        <TextBlock>
+                            <Run
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="DEL" />
+                            <Run FontWeight="Regular" Text=": Delete" />
+                        </TextBlock>
+                    </Button>
+                </UniformGrid>
+            </Border>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.Style>
+                    <Style>
+                        <Style.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="9" />
+                                <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </Grid.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" MinWidth="12" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding FullSelectedObject, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Column="1" Text="{Binding TmDbId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <Grid>
+                <ListBox
+                    Background="Transparent"
+                    ItemContainerStyle="{StaticResource SelectedContainerStyle}"
+                    ItemTemplate="{StaticResource MovieFolderViewTemplate}"
+                    ItemsPanel="{StaticResource ShortcutsItemsPanelTemplate}"
+                    ItemsSource="{Binding ChildFolders, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    SelectedItem="{Binding SelectedChildFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.Style>
+                        <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasData}" Value="true">
+                                    <Setter Property="Margin" Value="0,0,220,0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Style>
+                </ListBox>
+                <mediaFileBrowser:MovieDetailsDisplay
+                    Margin="0,0,12,12"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    DataContext="{Binding}" />
+
+            </Grid>
+        </DockPanel>
+        <Border Margin="1,0,-1,0" Visibility="{Binding IsBusy, Mode=OneWay, FallbackValue=false, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+            <Border.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Offset="0.0" Color="#6600FF00" />
+                                <GradientStop Offset="0.4" Color="#88FFFF00" />
+                                <GradientStop Offset="0.6" Color="#88FFFF00" />
+                                <GradientStop Offset="1.0" Color="#6600FF00" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            Duration="0:0:2.5"
+                                            From=".1"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetProperty="Background.(LinearGradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                                            To=".9" />
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            Duration="0:0:2.5"
+                                            From=".1"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetProperty="Background.(LinearGradientBrush.GradientStops)[2].(GradientStop.Offset)"
+                                            To=".9" />
+                                        <PointAnimation
+                                            AutoReverse="True"
+                                            Duration="00:00:8"
+                                            From="1 0"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetProperty="Background.(LinearGradientBrush.StartPoint)"
+                                            To="0 1" />
+                                        <PointAnimation
+                                            AutoReverse="True"
+                                            Duration="00:00:4"
+                                            From=".7 0"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetProperty="Background.(LinearGradientBrush.EndPoint)"
+                                            To="0 .3" />
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Resources>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="23"
+                    FontWeight="Bold"
+                    Text="Please Wait" />
+                <TextBlock
+                    Grid.Column="3"
+                    Margin="30,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="23"
+                    FontWeight="Bold"
+                    Text="Working..." />
+<TextBlock Grid.Column="1" 
+           Grid.ColumnSpan="3"
+           VerticalAlignment="Center"
+           TextAlignment="Center"
+           FontSize="22"
+           Margin="0,250,0,0" Text="{Binding ProgressMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <controls:ProgressRing
+                    Grid.Column="2"
+                    Width="190"
+                    Height="190"
+                    Foreground="Black"
+                    IsActive="{Binding IsBusy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <controls:ProgressRing.Effect>
+                        <DropShadowEffect Color="Gray" />
+                    </controls:ProgressRing.Effect>
+                </controls:ProgressRing>
+                <TextBlock
+                    Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="Black"
+                    FontSize="44"
+                    FontWeight="Bold"
+                    Text="{Binding ImageCountProgress, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, FallbackValue=0}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="DarkSlateGray" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </Border>
+        <simpleChildWindow:ChildWindow
+            x:Name="ChildWindow"
+            Title="Search For Movie"
+            Width="{Binding Converter={StaticResource PercentToWidth}, ElementName=MainWin, Path=ActualWidth, ConverterParameter=0.75}"
+            Height="{Binding Converter={StaticResource PercentToWidth}, ElementName=MainWin, Path=ActualHeight, ConverterParameter=0.66}"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsOpen="{Binding IsSearchAvailable}"
+            ShowCloseButton="True">
+            <simpleChildWindow:ChildWindow.Effect>
+                <DropShadowEffect BlurRadius="12" Color="DarkGreen" />
+            </simpleChildWindow:ChildWindow.Effect>
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="Auto" MinWidth="70" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                        x:Name="SearchTextBox"
+                        Margin="0,2,5,2"
+                        FontSize="23"
+                        Text="{Binding SearchName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding MovieSearchNow}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="0,2,5,2"
+                        FontSize="23"
+                        PreviewTextInput="NumberValidationTextBox"
+                        Text="{Binding SearchYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        TextAlignment="Right">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding MovieSearchNow}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button
+                        Grid.Column="2"
+                        Margin="0,2"
+                        Background="Green"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Command="{Binding MovieSearchNow}">
+                        Search
+                    </Button>
+
+                </Grid>
+
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Margin="0,2,0,0"
+                        BorderThickness="5"
+                        FontSize="24"
+                        Command="{Binding AcceptSearch}">
+                        <TextBlock Margin="2">
+                            Accept Value “<Run Text="{Binding SelectedSearchValue.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            ”</TextBlock>
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        Margin="5,2,0,0"
+                        Padding="2"
+                        Background="DarkRed"
+                        BorderThickness="5"
+                        FontSize="24"
+                        Content="Cancel" />
+                </Grid>
+                <ListBox
+                    AlternationCount="3"
+                    ItemTemplate="{StaticResource SearchMovieResultTemplate}"
+                    ItemsSource="{Binding SearchResults, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    SelectedItem="{Binding SelectedSearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </DockPanel>
+        </simpleChildWindow:ChildWindow>
+    </Grid>
+</controls:MetroWindow>
+
+
+
+
+
+
+

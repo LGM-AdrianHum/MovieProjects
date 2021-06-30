@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="TvFileBot.Controls.FileObjectUc"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TvFileBot.Controls"
+             xmlns:viewModel="clr-namespace:TvFileBot.ViewModel"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="200">
+    <UserControl.DataContext>
+        <viewModel:FileObject/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto"/>
+            <Setter Property="FontWeight" Value="Thin"/>
+        </Style>
+    </UserControl.Resources>
+    
+</UserControl>
+

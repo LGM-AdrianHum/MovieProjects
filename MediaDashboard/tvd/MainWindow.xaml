@@ -1,0 +1,217 @@
+﻿<controls:MetroWindow
+    x:Class="tvd.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:tvd"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:tvd.ViewModel"
+    xmlns:wpfTextBoxAutoComplete="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+    Title="TV Data"
+    Width="525"
+    Height="350"
+    Background="{StaticResource MaterialDesignPaper}"
+    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:ViewModel />
+    </Window.DataContext>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Create TV folder..." />
+                    <MenuItem Command="{Binding RegetDetails}" Header="Update Existing Data..." />
+                </MenuItem>
+            </Menu>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="22"
+                    wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding AllDirs}"
+                    wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteStringComparison="InvariantCultureIgnoreCase"
+                    Text="{Binding TestText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding LoadSearch}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Grid.Row="0" Grid.Column="2">
+                    <Rectangle
+                        Width="20"
+                        Height="20"
+                        Fill="White">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_deeplink}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+                <local:ClippingBorder
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3">
+                    <Grid MaxHeight="210">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MinWidth="300" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="33,0,0,0"
+                            FontSize="24"
+                            Text="{Binding SSeriesDetails.Series.Name}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="56"
+                            Margin="-12,9,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="#66FF0000"
+                            FontSize="8"
+                            FontWeight="Bold"
+                            RenderTransformOrigin="0.5,0.5"
+                            Text="{Binding SSeriesDetails.Series.Status}"
+                            TextAlignment="Center"
+                            TextTrimming="CharacterEllipsis">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform Angle="-45" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            MaxWidth="290"
+                            VerticalAlignment="Stretch"
+                            Text="{Binding SSeriesDetails.Series.Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="WrapWithOverflow" />
+                        <DataGrid
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            MaxHeight="200"
+                            AutoGenerateColumns="False"
+                            SelectedItem="{Binding SelectedEpisode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            ItemsSource="{Binding SSeriesDetails.Series.Episodes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Binding="{Binding SeasonEpisode}"
+                                    Header="Sea/Ep"
+                                    SortDirection="Ascending" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Name}"
+                                    Header="Episode Title"
+                                    SortDirection="Ascending" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </local:ClippingBorder>
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+                        <ColumnDefinition Width="Auto" MinWidth="55" />
+
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        FontSize="9"
+                        Text="{Binding SelectedFile.TvFileInfo.Directory.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="{Binding SelectedFile.TvFileInfo.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:NumericUpDown
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Value="{Binding SeasonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:NumericUpDown
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="2"
+                        Minimum="-1"
+                        Value="{Binding Episode1Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:NumericUpDown
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Minimum="-1"
+                        Value="{Binding Episode2Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:NumericUpDown
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="4"
+                        Minimum="-1"
+                        Value="{Binding Episode3Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:NumericUpDown
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="5"
+                        Minimum="-1"
+                        Value="{Binding Episode4Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="6"
+                        Command="{Binding RenameTvShow}">
+                        <TextBlock Text="{Binding NextName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Button>
+                </Grid>
+                <ListBox
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,3,0,0"
+                    ItemTemplate="{DynamicResource DataTemplate1}"
+                    ItemsSource="{Binding AllFiles, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    SelectedItem="{Binding SelectedFile, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+
+        </DockPanel>
+    </Grid>
+</controls:MetroWindow>
+

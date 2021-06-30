@@ -1,0 +1,63 @@
+﻿<Window
+  x:Class="RenameMovie.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:RenameMovie"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  Title="MainWindow"
+  Width="800"
+  Height="450"
+  Background="{DynamicResource MaterialDesignPaper}"
+  FontFamily="{DynamicResource MaterialDesignFont}"
+  TextElement.FontSize="13"
+  TextElement.FontWeight="Regular"
+  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="Auto"
+  mc:Ignorable="d">
+  <Window.DataContext>
+    <local:MainVm />
+  </Window.DataContext>
+  <Window.InputBindings>
+    <KeyBinding Key="add" />
+  </Window.InputBindings>
+  <DockPanel>
+    <Grid DockPanel.Dock="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Text="{Binding FocusFolder}" />
+      <Button
+        Grid.Column="1"
+        Command="{Binding MoveFocus}"
+        CommandParameter="r">
+        +
+      </Button>
+    </Grid>
+    <Grid DockPanel.Dock="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Text="{Binding FocusDirectory}" />
+      <Button
+        Grid.Column="1"
+        Command="{Binding MoveFocus}"
+        CommandParameter="-">
+        -
+      </Button>
+      <Button
+        Grid.Column="2"
+        Command="{Binding MoveFocus}"
+        CommandParameter="+">
+        +
+      </Button>
+
+    </Grid>
+    <Grid />
+  </DockPanel>
+</Window>

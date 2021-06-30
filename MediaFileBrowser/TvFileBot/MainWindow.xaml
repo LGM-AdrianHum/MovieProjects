@@ -1,0 +1,240 @@
+﻿<controls:MetroWindow
+    x:Class="TvFileBot.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TvFileBot"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    xmlns:viewModel="clr-namespace:TvFileBot.ViewModel"
+    x:Name="MainWin"
+    Title="MainWindow"
+    Width="1042.09"
+    Height="350"
+    Icon="Images/tv.ico"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:TvEpisodeBotController />
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding
+            Key="F"
+            Command="{Binding ShowSearch}"
+            Modifiers="Control" />
+    </Window.InputBindings>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout
+                Width="400"
+                Header="Flyout"
+                IsOpen="{Binding IsSearchVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Position="Right">
+
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    <Grid>
+        <DockPanel Margin="0,0,420,0">
+
+            <Menu FontSize="33" DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Command="{Binding RescanWorkingDirectory}" Header="_Rescan">
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Margin="3,1,6,1"
+                                Width="26"
+                                Height="26"
+                                Fill="LimeGreen">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_refresh}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding RescanWorkingDirectory}" Header="Rename All...">
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Margin="3,1,6,1"
+                                Width="26"
+                                Height="26"
+                                Fill="LimeGreen">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_list_select}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding RescanWorkingDirectory}" Header="Move All...">
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Width="26"
+                                Height="26"
+                                Margin="3,1,6,1"
+                                Fill="LimeGreen">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_truck}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="E_xit" >
+                        <MenuItem.Icon>
+                            <Rectangle
+                                Margin="3,1,6,1"
+                                Width="26"
+                                Height="26"
+                                Fill="LimeGreen">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_door_leave}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <TextBlock FontSize="33" DockPanel.Dock="Bottom"><Run Text="Status Strip:" /></TextBlock>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSearchVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Setter Property="Margin" Value="0,0,420,0" />
+                                <Setter Property="Background" Value="LimeGreen" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <DataGrid
+                    Grid.Row="0"
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding DistinctShows, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding DataContext.GetTvDetails, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}">
+                                            <Rectangle
+                                                Width="16"
+                                                Height="16"
+                                                Fill="LimeGreen">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_search}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+
+                                        <Button Command="{Binding DataContext.GetTvDetails, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}">
+                                            <Rectangle
+                                                Width="16"
+                                                Height="16"
+                                                Fill="LimeGreen">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_folder}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+
+                                        <Button Command="{Binding DataContext.GetTvDetails, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}">
+                                            <Rectangle
+                                                Width="16"
+                                                Height="16"
+                                                Fill="LimeGreen">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_save}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding SearchShowName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Name" />
+                        <DataGridTextColumn Binding="{Binding MatchingShow.Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Match" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding MatchingShow.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Match" />
+                        <DataGridTextColumn Binding="{Binding MatchingShow.DriveNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Match" />
+                        <DataGridTextColumn Binding="{Binding MatchingShow.Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Status" />
+
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding MatchingShow.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Match" />
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+                <DataGrid
+                    Grid.Row="1"
+                    AutoGenerateColumns="False"
+                    Grid.IsSharedSizeScope="True"
+                    ItemsSource="{Binding AllFilesInSync, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding DataContext.RenameVideoFile, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}">
+                                            <Rectangle
+                                                Width="26"
+                                                Height="26"
+                                                Fill="LimeGreen">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_axis_x}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+                                        <Button Command="{Binding DataContext.MoveVideoFile, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}">
+                                            <Rectangle
+                                                Width="26"
+                                                Height="26"
+                                                Fill="LimeGreen">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_box}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Name" />
+                        <DataGridTextColumn Binding="{Binding SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="S/E" />
+                        <DataGridTextColumn Binding="{Binding TvShowName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Series" />
+                        <DataGridTextColumn Binding="{Binding EpisodeName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Match" />
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </DockPanel>
+        <simpleChildWindow:ChildWindow
+            Title="Move File"
+            Width="{Binding Converter={StaticResource PercentToWidth}, ElementName=MainWin, Path=ActualWidth, ConverterParameter=0.75}"
+            Height="{Binding Converter={StaticResource PercentToWidth}, ElementName=MainWin, Path=ActualHeight, ConverterParameter=0.3}"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            BorderBrush="LimeGreen"
+            BorderThickness="2"
+            IsOpen="{Binding IsMoveFileReady, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <local:MoveFileJob DataContext="{Binding MoveTargetFileDialog, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        </simpleChildWindow:ChildWindow>
+    </Grid>
+</controls:MetroWindow>
+

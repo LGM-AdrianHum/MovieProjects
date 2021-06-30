@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Transitionals.Controls;assembly=Transitionals"
+    xmlns:local="clr-namespace:WallOfMovies"
+    xmlns:transitionals="clr-namespace:Transitionals;assembly=Transitionals"
+    xmlns:transitions="clr-namespace:Transitionals.Transitions;assembly=Transitionals">
+    <DataTemplate x:Key="WallPic" DataType="local:MoviePic">
+        <Grid Width="120" Height="200">
+
+            <controls:TransitionElement
+                x:Name="TransitionBox"
+                Grid.Row="0"
+                VerticalAlignment="Stretch"
+                Content="{Binding ContentControl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                TransitionSelector="{DynamicResource RandomTsx}" />
+            <Border HorizontalAlignment="Stretch" VerticalAlignment="Bottom" MinHeight="40">
+                <TextBlock
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,3"
+                
+                Background="#33990000"
+                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                TextWrapping="Wrap" />
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <transitionals:RandomTransitionSelector x:Key="RandomTsx">
+        <transitions:CheckerboardTransition />
+        <transitions:DoorTransition />
+        <transitions:TranslateTransition />
+        <transitions:DotsTransition />
+        <transitions:RotateTransition Angle="45" />
+        <transitions:RollTransition />
+    </transitionals:RandomTransitionSelector>
+
+
+</ResourceDictionary>

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MediaDashboard.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="tv" Type="System.String" Scope="User">
+      <Value Profile="(Default)">K:\BTSync.Archive\tv</Value>
+    </Setting>
+    <Setting Name="movie" Type="System.String" Scope="User">
+      <Value Profile="(Default)">K:\BTSync.Archive\movie</Value>
+    </Setting>
+    <Setting Name="cache" Type="System.String" Scope="User">
+      <Value Profile="(Default)">K:\CacheData</Value>
+    </Setting>
+    <Setting Name="TvTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">K:\TvLib</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

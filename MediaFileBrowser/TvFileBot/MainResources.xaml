@@ -1,0 +1,2002 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:TvFileBot.Controls"
+    xmlns:model="clr-namespace:TVDB.Model;assembly=TVDB"
+    xmlns:transitionals="clr-namespace:Transitionals;assembly=Transitionals"
+    xmlns:transitions="clr-namespace:Transitionals.Transitions;assembly=Transitionals"
+    xmlns:viewModel="clr-namespace:TvFileBot.ViewModel">
+
+    <viewModel:PercentageConverter x:Key="PercentToWidth" />
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+    <transitionals:RandomTransitionSelector x:Key="RandomTsx">
+        <transitions:CheckerboardTransition />
+        <transitions:DoorTransition />
+        <transitions:TranslateTransition />
+        <transitions:DotsTransition />
+        <transitions:RotateTransition Angle="45" />
+        <transitions:RollTransition />
+    </transitionals:RandomTransitionSelector>
+
+
+    <Style
+        x:Key="Heading1"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="33" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Foreground" Value="White" />
+
+    </Style>
+
+    <Style
+        x:Key="Label"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Foreground" Value="Yellow" />
+
+    </Style>
+
+    <Style
+        x:Key="LabelLeft"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="Thin" />
+        <Setter Property="Foreground" Value="Yellow" />
+
+    </Style>
+
+    <Style
+        x:Key="DataInfo"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="Margin" Value="3,0,0,0" />
+        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="White" />
+
+    </Style>
+
+
+    <DataTemplate x:Key="FileList" DataType="viewModel:ItemBase">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" SharedSizeGroup="Name" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ShowName" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="SeasonEpisode" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="1" Text="{Binding TvShowName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="2" Text="{Binding SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="TvFileInfoTemplate" DataType="viewModel:FileObject">
+        <controls:ClippingBorder
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,0,0,2"
+            BorderBrush="#FF444444"
+            BorderThickness="2"
+            CornerRadius="6">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0" Color="#FF333333" />
+                    <GradientStop Offset=".2" Color="#99FFFFFF" />
+                    <GradientStop Offset=".8" Color="#99FFFFFF" />
+                    <GradientStop Offset="1" Color="#FF333333" />
+                </LinearGradientBrush>
+            </Border.Background>
+
+
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+
+
+                <Image
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    Grid.Column="0"
+                    MaxWidth="58"
+                    Margin="0,6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Source="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontFamily="Roboto"
+                    FontSize="22"
+                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontFamily="Roboto"
+                    FontSize="12"
+                    Text="{Binding DirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    FontFamily="Roboto"
+                    FontSize="12"
+                    FontWeight="DemiBold">
+                    <Run Text="{Binding Showname, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                    -<Run Text="{Binding SeasonCodes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    FontFamily="Roboto"
+                    FontSize="9"
+                    FontWeight="Normal">
+                    <Run Text="{Binding FileLengthStr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                    <Run Text="{Binding FileCreationTimeStr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                </TextBlock>
+            </Grid>
+        </controls:ClippingBorder>
+    </DataTemplate>
+    <DataTemplate x:Key="EpisodeView" DataType="model:Episode">
+        <Grid Width="350" controls:GridHelpers.RowCount="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Image
+                Width="100"
+                Height="80"
+                Source="Images/blankfile.ico" />
+            <TextBlock
+                Grid.Row="1"
+                Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
+            <TextBlock Grid.Row="2" Text="{Binding SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Text="{Binding Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="WrapWithOverflow" />
+        </Grid>
+    </DataTemplate>
+
+    <Canvas
+        x:Key="BgFolders"
+        Name="Layer_1"
+        Canvas.Left="0"
+        Canvas.Top="0"
+        Width="184"
+        Height="448">
+        <Canvas.RenderTransform>
+            <TranslateTransform X="0" Y="0" />
+        </Canvas.RenderTransform>
+        <Canvas.Resources />
+        <!--  Unknown tag: metadata  -->
+        <!--  Unknown tag: sodipodi:namedview  -->
+        <Rectangle
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Name="rect3341"
+            Canvas.Left="2.4"
+            Canvas.Top="14.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -9.6472 6.8854" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3343"
+            Canvas.Left="2.2"
+            Canvas.Top="12.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -10.4149 6.5769" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3345" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M6.4 12.8C4 10.5 4 6.7 6.4 4.3s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 15.1 8.8 15.1 6.4 12.8z M14.3 5  c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 10.2 16.3 7 14.3 5z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3347" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M10.2 16.3c-1.9-0.2-3.7-1-5.2-2.3C2 11 1.9 6.2 4.9 3.1C6.4 1.8 8.3 1 10.2 0.9V0C8 0.2 6 1.1 4.4 2.5  C1 5.8 0.9 11.2 4.2 14.6c1.7 1.4 3.8 2.3 6 2.5V16.3L10.2 16.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3349"
+            Canvas.Left="39.7"
+            Canvas.Top="14.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 1.294 33.2412" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3351"
+            Canvas.Left="39.5"
+            Canvas.Top="12.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 0.5263 32.9326" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3353" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 12.8c-2.4-2.3-2.4-6.1 0-8.5C46 2 49.8 2 52.2 4.3s2.4 6.1 0 8.5l0 0C49.8 15.1 46.1 15.1 43.7 12.8z   M51.5 5c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 10.2 53.5 7 51.5 5z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3355" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 16.3c-1.9-0.2-3.7-1-5.1-2.3C39 11 39 6.2 41.9 3.1c1.5-1.3 3.3-2.1 5.3-2.2V0c-2.1 0.2-4.1 1.1-5.7 2.5  c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.5V16.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3357"
+            Canvas.Left="76.9"
+            Canvas.Top="14.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 12.1645 59.5676" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3359"
+            Canvas.Left="76.7"
+            Canvas.Top="12.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 11.3969 59.2674" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3361" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M81 12.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C87.1 15.1 83.3 15.1 81 12.8z M88.8 5  c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 10.2 90.8 7 88.8 5z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3363" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M85.2 16.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.4 3.4-2.3 5.4-2.2V0c-2.3 0-4.4 0.9-6.1 2.5  c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V16.3L85.2 16.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3365"
+            Canvas.Left="114.2"
+            Canvas.Top="14.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 23.1016 85.9275" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3367"
+            Canvas.Left="114"
+            Canvas.Top="12.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 22.3381 85.6231" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3369" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M118.2 12.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0C124.3 15.1 120.6 15.1 118.2 12.8  z M126.1 5c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128.1 10.2 128.1 7 126.1 5z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3371" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 16.3c-2 0-3.9-0.8-5.3-2.3c-3-3-3.1-7.9-0.1-10.9c1.4-1.4 3.4-2.3 5.4-2.2V0c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9s3.8 2.5 6 2.5V16.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3373"
+            Canvas.Left="151.5"
+            Canvas.Top="14.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 34.0429 112.2891" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3375"
+            Canvas.Left="151.3"
+            Canvas.Top="12.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 33.2752 111.9889" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3377" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 12.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C161.6 15.1 157.8 15.1 155.5 12.8z   M163.3 5c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C165.3 10.2 165.3 7 163.3 5z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3379" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 16.3c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2V0c-2.1 0.2-4.2 1.1-5.8 2.5  c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.5L159.2 16.3L159.2 16.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3381" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 38l-8.6-8.6l6.8-6.8l8.6 8.6L26.2 38z M18.9 29.4l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 29.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3383" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 41.1L14.5 29.8l2.2-2.2L28 38.9L25.9 41.1z M15.9 29.8l10 10l0.9-0.9l-10-10L15.9 29.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3385" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 38l-8.6-8.6l6.8-6.8l8.6 8.6L64 38z M56.7 29.4l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 29.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3387" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 41.1L52.3 29.8l2.2-2.2l11.3 11.3L63.6 41.1z M53.6 29.8l10 10l0.9-0.9l-10-10L53.6 29.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3389" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 38l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 38z M94.4 29.4l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 29.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3391" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 41.1L90 29.8l2.2-2.2l11.3 11.3L101.3 41.1z M91.3 29.8l10 10l0.9-0.9l-10-10L91.3 29.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3393" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 38l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 38z M132.2 29.4l7.3 7.3l5.5-5.5l-7.3-7.3L132.2 29.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3395" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 41.1l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 41.1z M129 29.8l10 10l0.9-0.9l-10-10L129 29.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3397" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 38l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 38z M169.9 29.4l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 29.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3399" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 41.1l-11.3-11.3l2.2-2.2L179 38.8L176.8 41.1z M166.8 29.8l10 10l0.9-0.9l-10-10L166.8 29.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3401"
+            Canvas.Left="2.4"
+            Canvas.Top="57.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -39.9574 19.4792" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3403"
+            Canvas.Left="39.7"
+            Canvas.Top="57.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -29.0121 45.8392" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3405"
+            Canvas.Left="39.5"
+            Canvas.Top="55.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -29.7739 45.5306" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3407" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 55.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C49.8 57.9 46.1 57.9 43.7 55.6z M51.5 47.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 53 53.5 49.8 51.5 47.8L51.5 47.8z  " FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3409" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 59.1c-1.9-0.2-3.7-1-5.1-2.2c-3-2.9-3.1-7.8-0.2-10.8c1.5-1.3 3.3-2.1 5.3-2.2V43  c-2.1 0.2-4.1 1.1-5.7 2.5c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.6V59.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3411"
+            Canvas.Left="76.9"
+            Canvas.Top="57.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -18.1415 72.1656" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3413"
+            Canvas.Left="76.7"
+            Canvas.Top="55.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -18.9075 71.8613" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3415" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M81 55.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0C87.1 57.9 83.3 57.9 81 55.6  z M88.8 47.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 53 90.8 49.8 88.8 47.8L88.8 47.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3417" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M85.2 59.1c-2 0-4-0.8-5.4-2.2c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-2.3 0-4.4 0.9-6.1 2.5  c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.6V59.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3419"
+            Canvas.Left="114.2"
+            Canvas.Top="57.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -7.2045 98.5255" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3421"
+            Canvas.Left="114"
+            Canvas.Top="55.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -7.9662 98.217" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3423" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M118.2 55.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C124.3 57.9 120.6 57.9 118.2 55.6z M126.1 47.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128 53 128 49.8 126.1 47.8  L126.1 47.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3425" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 59.1c-2 0-3.9-0.8-5.3-2.2c-3-3-3-7.8-0.1-10.8c1.4-1.5 3.4-2.3 5.4-2.2V43c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9c1.6 1.6 3.8 2.5 6 2.5V59.1L122.2 59.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3427"
+            Canvas.Left="151.5"
+            Canvas.Top="57.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 3.7368 124.8871" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3429"
+            Canvas.Left="151.3"
+            Canvas.Top="55.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 2.9085 124.5535" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3431" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 55.6c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C161.6 57.9 157.8 57.9 155.5 55.6z   M163.3 47.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C165.3 53 165.3 49.8 163.3 47.8L163.3 47.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3433" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 59.1c-1.9-0.2-3.7-1-5.2-2.2c-3-3-3.1-7.8-0.1-10.8c1.5-1.3 3.4-2.1 5.3-2.2V43  c-2.1 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.6L159.2 59.1L159.2 59.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3435" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 80.8l-8.6-8.6l6.8-6.8L33 74L26.2 80.8z M18.9 72.2l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 72.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3437" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 83.9L14.5 72.6l2.2-2.2L28 81.7L25.9 83.9z M15.9 72.6l10 10l0.9-0.9l-10-10L15.9 72.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3439" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 80.8l-8.6-8.6l6.8-6.8l8.6 8.6L64 80.8z M56.7 72.2l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 72.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3441" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 83.9L52.3 72.6l2.2-2.2l11.3 11.3L63.6 83.9z M53.6 72.6l10 10l0.9-0.9l-10-10L53.6 72.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3443" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 80.8l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 80.8z M94.4 72.2l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 72.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3445" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 83.9L90 72.6l2.2-2.2l11.3 11.3L101.3 83.9z M91.3 72.6l10 10l0.9-0.9l-10-10L91.3 72.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3447" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 80.8l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 80.8z M132.2 72.2l7.3 7.3L145 74l-7.3-7.3L132.2 72.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3449" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 83.9l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 83.9z M129 72.6l10 10l0.9-0.9l-10-10L129 72.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3451" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 80.8l-8.6-8.6l6.8-6.8L184 74L177.2 80.8z M169.9 72.2l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 72.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3453" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 83.9l-11.3-11.3l2.2-2.2L179 81.7L176.8 83.9z M166.8 72.6l10 10l0.9-0.9l-10-10L166.8 72.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3455"
+            Canvas.Left="39.7"
+            Canvas.Top="100.2"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -59.2871 58.3623" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3457"
+            Canvas.Left="39.5"
+            Canvas.Top="98.2"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -60.0506 58.0579" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3459" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 98.4c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C49.8 100.8 46.1 100.8 43.7 98.4z M51.5 90.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 95.8 53.5 92.6 51.5 90.6  L51.5 90.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3461" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 101.9c-1.9-0.2-3.7-1-5.1-2.2c-3.1-3-3.1-7.8-0.2-10.9c1.5-1.3 3.3-2.1 5.3-2.2v-0.9  c-2.1 0.2-4.1 1.1-5.7 2.5c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.5V101.9z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3463"
+            Canvas.Left="76.9"
+            Canvas.Top="100.2"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -48.4166 84.6887" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3465"
+            Canvas.Left="76.7"
+            Canvas.Top="98.2"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -49.1843 84.3885" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3467" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M81 98.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0C87.1 100.8 83.3 100.8 81 98.4z   M88.8 90.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 95.8 90.8 92.6 88.8 90.6L88.8 90.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3469" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M85.2 101.9c-2 0-4-0.8-5.4-2.2c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-2.3 0-4.4 0.9-6.1 2.5  c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V101.9L85.2 101.9z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3471"
+            Canvas.Left="114.2"
+            Canvas.Top="100.2"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -37.4754 111.0528" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3473"
+            Canvas.Left="114"
+            Canvas.Top="98.2"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -38.243 110.7442" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3475" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M118.2 98.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C124.3 100.8 120.6 100.8 118.2 98.4z M126.1 90.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128 95.8 127.9 92.6 126.1 90.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3477" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 101.9c-2 0-3.9-0.8-5.3-2.2c-3-3-3.1-7.9-0.1-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9s3.8 2.5 6 2.5V101.9z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3479"
+            Canvas.Left="151.5"
+            Canvas.Top="100.2"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -26.5342 137.4144" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3481"
+            Canvas.Left="151.2"
+            Canvas.Top="98.2"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -27.3725 137.0766" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3483" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 98.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C161.6 100.8 157.8 100.8 155.5 98.4z   M163.3 90.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C165.3 95.8 165.3 92.6 163.3 90.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3485" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 101.9c-1.9-0.2-3.7-1-5.2-2.2c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9  c-2.1 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.5L159.2 101.9L159.2 101.9z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3487" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 123.6l-8.6-8.6l6.8-6.8l8.6 8.6L26.2 123.6z M18.9 115l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 115z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3489" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 126.7l-11.3-11.3l2.2-2.2l11.3 11.3L25.9 126.7z M15.9 115.4l10 10l0.9-0.9l-10-10L15.9 115.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3491" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 123.6l-8.6-8.6l6.8-6.8l8.6 8.6L64 123.6z M56.7 115l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 115z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3493" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 126.7l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 126.7z M53.6 115.4l10 10l0.9-0.9l-10-10L53.6 115.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3495" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 123.6l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 123.6z M94.4 115l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 115z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3497" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 126.7L90 115.4l2.2-2.2l11.3 11.3L101.3 126.7z M91.3 115.4l10 10l0.9-0.9l-10-10L91.3 115.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3499" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 123.6l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 123.6z M132.1 115l7.3 7.3l5.5-5.5l-7.3-7.3L132.1 115z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3501" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 126.7l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 126.7z M129 115.4l10 10l0.9-0.9l-10-10L129 115.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3503" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 123.6l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 123.6z M169.9 115l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 115z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3505" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 126.7l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 126.7z M166.8 115.4l10 10l0.9-0.9l-10-10L166.8 115.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Canvas Name="g3507">
+            <Rectangle
+                Name="rect3509"
+                Canvas.Left="2.4"
+                Canvas.Top="144.5"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -101.5698 44.9565" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3511"
+                Canvas.Left="2.2"
+                Canvas.Top="142.5"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -102.3375 44.6563" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3513" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M6.4 142.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 145.1 8.8 145.1 6.4 142.8z    M14.3 135c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 140.2 16.3 137 14.3 135z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3515" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M10.2 146.3c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2V130   c-2.2 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 6 2.5L10.2 146.3L10.2 146.3z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3517">
+            <Rectangle
+                Name="rect3519"
+                Canvas.Left="2.4"
+                Canvas.Top="100.2"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -70.2195 32.0072" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3521"
+                Canvas.Left="2.2"
+                Canvas.Top="98.2"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -70.9872 31.707" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3523" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M6.4 98.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 100.8 8.8 100.8 6.4 98.4z M14.3 90.6   c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 95.9 16.3 92.6 14.3 90.6z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3525" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M10.2 101.9c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9   C8 85.8 6 86.7 4.4 88.1C1 91.4 1 96.8 4.3 100.2c1.7 1.4 3.8 2.3 6 2.5L10.2 101.9L10.2 101.9z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3527">
+            <Rectangle
+                Name="rect3529"
+                Canvas.Left="2.4"
+                Canvas.Top="57.4"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -39.9479 19.4793" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3531"
+                Canvas.Left="2.2"
+                Canvas.Top="55.4"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -40.7155 19.179" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3533" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M6.4 55.6c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 57.9 8.8 57.9 6.4 55.6z M14.3 47.8   c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 53 16.3 49.8 14.3 47.8z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3535" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M10.2 59.1c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9   C8.1 43 6 43.9 4.4 45.3C1 48.6 0.9 54.1 4.2 57.4c1.7 1.4 3.8 2.3 6 2.5V59.1L10.2 59.1z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3537">
+            <Rectangle
+                Name="rect3539"
+                Canvas.Left="2.4"
+                Canvas.Top="187.4"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -131.8922 57.5337" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3541"
+                Canvas.Left="2.2"
+                Canvas.Top="185.4"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -132.6598 57.2336" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3543" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M6.4 185.7c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 188 8.8 188 6.4 185.7z M14.3 177.9   c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 183.1 16.3 179.9 14.3 177.9z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3545" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M10.2 189.1c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9   C8 173 6 173.9 4.4 175.3C1 178.6 1 184 4.3 187.4c1.7 1.4 3.8 2.3 6 2.5L10.2 189.1L10.2 189.1z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3547">
+            <Rectangle
+                Name="rect3549"
+                Canvas.Left="2.4"
+                Canvas.Top="230.2"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -162.1452 70.0749" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3551"
+                Canvas.Left="2.2"
+                Canvas.Top="228.2"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -162.9128 69.7746" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3553" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M6.4 228.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0C12.6 230.8 8.8 230.8 6.4 228.4z    M14.3 220.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 225.9 16.3 222.6 14.3 220.6z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3555" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M10.2 231.9c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9   c-2.2 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 6 2.5L10.2 231.9L10.2 231.9z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Rectangle
+            Name="rect3557"
+            Canvas.Left="39.7"
+            Canvas.Top="144.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -90.6327 71.3164" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3559"
+            Canvas.Left="39.5"
+            Canvas.Top="142.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -91.3962 71.012" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3561" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 142.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C49.8 145.1 46.1 145.1 43.7 142.8z M51.5 135c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 140.2 53.5 137 51.5 135z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3563" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 146.3c-1.9-0.2-3.7-1-5.1-2.3c-3.1-3-3.1-7.8-0.2-10.9c1.5-1.3 3.3-2.1 5.3-2.2V130  c-2.1 0.2-4.1 1.1-5.7 2.5c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.5V146.3L47.2 146.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3565"
+            Canvas.Left="76.9"
+            Canvas.Top="144.6"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -79.7622 97.6429" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3567"
+            Canvas.Left="76.7"
+            Canvas.Top="142.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -80.5257 97.3385" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3569" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M81 142.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0C87.1 145.1 83.3 145.1 81 142.8z   M88.8 135c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 140.2 90.8 137 88.8 135z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3571" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M85.2 146.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2V130c-2.3 0-4.4 0.9-6.1 2.5  c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V146.3L85.2 146.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3573"
+            Canvas.Left="114.2"
+            Canvas.Top="144.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -68.8168 124.0028" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3575"
+            Canvas.Left="114"
+            Canvas.Top="142.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -69.5886 123.6984" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3577" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M118.2 142.8c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C124.3 145.1 120.6 145.1 118.2 142.8z M126.1 135c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0  C127.4 140.3 126.8 137.3 126.1 135L126.1 135z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3579" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 146.3c-2 0-3.9-0.8-5.3-2.2c-3-3-3.1-7.9-0.1-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-1c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9c1.6 1.6 3.8 2.5 6 2.5V146.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3581"
+            Canvas.Left="151.5"
+            Canvas.Top="144.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -57.8797 150.3685" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3583"
+            Canvas.Left="151.2"
+            Canvas.Top="142.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -58.718 150.0307" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3585" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 142.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0  C161.6 145.1 157.8 145.1 155.5 142.8z M163.3 135c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C165.3 140.2 165.3 137 163.3 135  L163.3 135z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3587" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 146.3c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2V130  c-2.1 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.5L159.2 146.3L159.2 146.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3589" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 168l-8.6-8.6l6.8-6.8l8.6 8.6L26.2 168z M18.9 159.4l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 159.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3591" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 171.1l-11.3-11.3l2.2-2.2l11.3 11.3L25.9 171.1z M15.9 159.8l10 10l0.9-0.9l-10-10L15.9 159.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3593" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 168l-8.6-8.6l6.8-6.8l8.6 8.6L64 168z M56.7 159.4l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 159.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3595" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 171.1l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 171.1z M53.6 159.8l10 10l0.9-0.9l-10-10L53.6 159.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3597" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 168l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 168z M94.4 159.4l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 159.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3599" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 171.1L90 159.8l2.2-2.2l11.3 11.3L101.3 171.1z M91.3 159.8l10 10l0.9-0.9l-10-10L91.3 159.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3601" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 168l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 168z M132.2 159.4l7.3 7.3l5.5-5.5l-7.3-7.3L132.2 159.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3603" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 171.1l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 171.1z M129.1 159.8l10 10l0.9-0.9l-10-10L129.1 159.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3605" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 168l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 168z M169.9 159.4l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 159.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3607" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 171.1l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 171.1z M166.8 159.8l10 10l0.9-0.9l-10-10L166.8 159.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3609"
+            Canvas.Left="2.4"
+            Canvas.Top="187.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -131.8759 57.5545" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3611"
+            Canvas.Left="2.2"
+            Canvas.Top="185.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -132.6377 57.2459" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3613"
+            Canvas.Left="39.7"
+            Canvas.Top="187.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -120.9388 83.9144" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3615"
+            Canvas.Left="39.5"
+            Canvas.Top="185.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -121.6964 83.61" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3617" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 185.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C49.8 187.9 46.1 187.9 43.7 185.6z M51.5 177.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 183 53.5 179.8 51.5 177.8  L51.5 177.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3619" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 189.1c-1.9-0.2-3.7-1-5.1-2.2c-3-2.9-3.1-7.8-0.2-10.8c1.5-1.3 3.3-2.1 5.3-2.2V173  c-2.1 0.2-4.1 1.1-5.7 2.5c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.5V189.1L47.2 189.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3621"
+            Canvas.Left="114.2"
+            Canvas.Top="187.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -99.127 136.5966" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3623"
+            Canvas.Left="114"
+            Canvas.Top="185.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -99.8888 136.2964" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3625" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M118.2 185.6c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C124.3 187.9 120.6 187.9 118.2 185.6z M126.1 177.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0c2.4-1.5 3.5-4 1.9-6.4  C127.6 178 127.1 177.5 126.1 177.8L126.1 177.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3627" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 189.1c-2 0-3.9-0.8-5.3-2.2c-3-3-3.1-7.9-0.1-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9c1.6 1.6 3.8 2.5 6 2.5V189.1L122.2 189.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3629"
+            Canvas.Left="151.5"
+            Canvas.Top="187.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -88.19 162.9624" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3631"
+            Canvas.Left="151.3"
+            Canvas.Top="185.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -89.0183 162.6287" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3633" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 185.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0s2.4 6.1 0 8.5l0 0  C161.6 187.9 157.8 187.9 155.5 185.6z M163.3 177.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0  C165.3 183 165.3 179.8 163.3 177.8L163.3 177.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3635" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 189.1c-1.9-0.2-3.7-1-5.2-2.2c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2v-0.9  c-2.1 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.5L159.2 189.1L159.2 189.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3637" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 210.8l-8.6-8.6l6.8-6.8L33 204L26.2 210.8z M18.9 202.2l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 202.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3639" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 213.9l-11.3-11.3l2.2-2.2l11.3 11.3L25.9 213.9z M15.9 202.6l10 10l0.9-0.9l-10-10L15.9 202.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3641" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 210.8l-8.6-8.6l6.8-6.8l8.6 8.6L64 210.8z M56.7 202.2l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 202.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3643" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 213.9l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 213.9z M53.6 202.6l10 10l0.9-0.9l-10-10L53.6 202.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3645" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 210.8l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 210.8z M94.4 202.2l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 202.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3647" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 213.9L90 202.6l2.2-2.2l11.3 11.3L101.3 213.9z M91.3 202.6l10 10l0.9-0.9l-10-10L91.3 202.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3649" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 210.8l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 210.8z M132.2 202.2l7.3 7.3l5.5-5.5l-7.3-7.3L132.2 202.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3651" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 213.9l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 213.9z M129.1 202.6l10 10l0.9-0.9l-10-10L129.1 202.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3653" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 210.8l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 210.8z M169.9 202.2l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 202.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3655" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 213.9l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 213.9z M166.8 202.6l10 10l0.9-0.9l-10-10L166.8 202.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3657"
+            Canvas.Left="77"
+            Canvas.Top="230.2"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -140.2685 122.7974" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3659"
+            Canvas.Left="76.7"
+            Canvas.Top="228.2"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -141.1069 122.4596" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3661" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M81 228.4c-2.4-2.3-2.4-6.1 0-8.5s6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0C87.1 230.8 83.3 230.8 81 228.4z   M88.8 220.6c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 225.8 90.8 222.6 88.8 220.6L88.8 220.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3663" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M85.2 231.9c-2 0-4-0.8-5.4-2.2c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-2.3 0-4.4 0.9-6.1 2.5  c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V231.9L85.2 231.9z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3665" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 253.6l-8.6-8.6l6.8-6.8l8.6 8.6L26.2 253.6z M18.9 245l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 245z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3667" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 256.7l-11.3-11.3l2.2-2.2l11.3 11.3L25.9 256.7z M15.9 245.4l10 10l0.9-0.9l-10-10L15.9 245.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3669" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 253.6l-8.6-8.6l6.8-6.8l8.6 8.6L64 253.6z M56.7 245l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 245z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3671" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 256.7l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 256.7z M53.6 245.4l10 10l0.9-0.9l-10-10L53.6 245.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3673" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 444.9l-8.6-8.6l6.8-6.8l8.6 8.6L64 444.9z M56.7 436.2l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 436.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3675" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 448l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 448z M53.6 436.6l10 10l0.9-0.9l-10-10L53.6 436.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3677" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 253.6l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 253.6z M94.4 245l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 245z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3679" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 256.7L90 245.4l2.2-2.2l11.3 11.3L101.3 256.7z M91.3 245.4l10 10l0.9-0.9l-10-10L91.3 245.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3681" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 253.6l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 253.6z M132.1 245l7.3 7.3l5.5-5.5l-7.3-7.3L132.1 245z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3683" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 256.7l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 256.7z M129 245.4l10 10l0.9-0.9l-10-10L129 245.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3685" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 253.6l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 253.6z M169.9 245l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 245z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3687" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 256.7l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 256.7z M166.8 245.4l10 10l0.9-0.9l-10-10L166.8 245.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3689"
+            Canvas.Left="2.4"
+            Canvas.Top="274.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -193.4924 83.0359" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3691"
+            Canvas.Left="2.2"
+            Canvas.Top="272.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -194.26 82.7274" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3693" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M6.4 272.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C12.6 275.1 8.8 275.1 6.4 272.8z M14.3 265c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C16.3 270.2 16.3 267 14.3 265z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3695" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M10.2 276.3c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2V260  c-2.2 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 6 2.5L10.2 276.3L10.2 276.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3697"
+            Canvas.Left="77"
+            Canvas.Top="274.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -171.6141 135.7515" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Canvas Name="g3699">
+            <Rectangle
+                Name="rect3701"
+                Canvas.Left="76.7"
+                Canvas.Top="272.5"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -172.4524 135.4137" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3703" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M81 272.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0   C87.1 275.1 83.3 275.1 81 272.8z M88.8 265c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 270.2 90.8 267 88.8 265z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3705" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M85.2 276.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2V260c-2.3 0-4.4 0.9-6.1 2.5   c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V276.3L85.2 276.3z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3707">
+            <Rectangle
+                Name="rect3709"
+                Canvas.Left="114"
+                Canvas.Top="272.5"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -161.5134 161.7744" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3711" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M118.3 272.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0   C124.4 275.1 120.6 275.1 118.3 272.8z M126.1 265c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128.1 270.2 128.1 267 126.1 265   z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3713" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M122.5 276.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2V260c-2.3 0-4.4 0.9-6.1 2.5   c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V276.3L122.5 276.3z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Rectangle
+            Name="rect3715"
+            Canvas.Left="114.2"
+            Canvas.Top="274.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -160.7435 162.078" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3717"
+            Canvas.Left="151.5"
+            Canvas.Top="274.5"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -149.8023 188.4396" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3719"
+            Canvas.Left="151.3"
+            Canvas.Top="272.5"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -150.5699 188.1394" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3721" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M155.5 272.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C161.6 275.1 157.8 275.1 155.5 272.8z M163.3 265c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C165.3 270.2 165.3 267 163.3 265  L163.3 265z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3723" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M159.2 276.3c-1.9-0.2-3.7-1-5.2-2.3c-3-3-3.1-7.8-0.1-10.9c1.5-1.3 3.4-2.1 5.3-2.2V260  c-2.1 0.2-4.2 1.1-5.8 2.5c-3.4 3.3-3.4 8.7-0.1 12.1c1.7 1.4 3.8 2.3 5.9 2.5L159.2 276.3L159.2 276.3z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3725" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M26.2 298l-8.6-8.6l6.8-6.8l8.6 8.6L26.2 298z M18.9 289.4l7.3 7.3l5.5-5.5l-7.3-7.3L18.9 289.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3727" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M25.9 301.1l-11.3-11.3l2.2-2.2l11.3 11.3L25.9 301.1z M15.9 289.8l10 10l0.9-0.9l-10-10L15.9 289.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3729" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 298l-8.6-8.6l6.8-6.8l8.6 8.6L64 298z M56.7 289.4l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 289.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3731" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 301.1l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 301.1z M53.6 289.8l10 10l0.9-0.9l-10-10L53.6 289.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3733" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.5 298l-8.6-8.6l6.8-6.8l8.6 8.6L139.5 298z M132.2 289.4l7.3 7.3l5.5-5.5l-7.3-7.3L132.2 289.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3735" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M139.1 301.1l-11.3-11.3l2.2-2.2l11.3 11.3L139.1 301.1z M129.1 289.8l10 10l0.9-0.9l-10-10L129.1 289.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3737" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 298l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 298z M169.9 289.4l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 289.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3739" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 301.1l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 301.1z M166.8 289.8l10 10l0.9-0.9l-10-10L166.8 289.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Canvas Name="g3741">
+            <Rectangle
+                Name="rect3743"
+                Canvas.Left="76.9"
+                Canvas.Top="323.6"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -206.3314 150.0737" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3745"
+                Canvas.Left="76.7"
+                Canvas.Top="321.5"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -207.0991 149.7652" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3747" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M81 321.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0   C87.1 324.1 83.3 324.1 81 321.8z M88.8 314c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C90.8 319.2 90.8 316 88.8 314z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3749" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M85.2 325.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2V309c-2.3 0-4.4 0.9-6.1 2.5   c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V325.3L85.2 325.3z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3751">
+            <Rectangle
+                Name="rect3753"
+                Canvas.Left="114.2"
+                Canvas.Top="323.5"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -195.3881 176.4301" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3755"
+                Canvas.Left="114"
+                Canvas.Top="321.5"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -196.1558 176.1216" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3757" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M118.3 321.8c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0   C124.4 324.1 120.6 324.1 118.3 321.8z M126.1 314c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128 319.2 128 316 126.1 314z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3759" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M122.4 325.3c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2V309c-2.3 0-4.4 0.9-6.1 2.5   c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V325.3L122.4 325.3z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Canvas Name="g3761">
+            <Rectangle
+                Name="rect3763"
+                Canvas.Left="114.2"
+                Canvas.Top="366.4"
+                Width="2.2"
+                Height="1.1"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -225.7105 189.0073" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle
+                Name="rect3765"
+                Canvas.Left="114"
+                Canvas.Top="364.4"
+                Width="1.1"
+                Height="6.7"
+                Fill="#000000">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -226.4782 188.6988" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Name="path3767" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M118.3 364.7c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0   C124.4 367 120.6 367 118.3 364.7z M126.1 356.9c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C128 362.1 128 358.9 126.1 356.9z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3769" Fill="#000000">
+                <Path.Data>
+                    <PathGeometry Figures="M122.4 368.1c-2 0-4-0.8-5.4-2.3c-3-3-3-7.9 0-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-2.3 0-4.4 0.9-6.1 2.5   c-3.3 3.3-3.3 8.8 0 12.1c1.6 1.6 3.8 2.5 6.1 2.5V368.1L122.4 368.1z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <Path Name="path3771" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M64 347l-8.6-8.6l6.8-6.8l8.6 8.6L64 347z M56.7 338.4l7.3 7.3l5.5-5.5l-7.3-7.3L56.7 338.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3773" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M63.6 350.1l-11.3-11.3l2.2-2.2l11.3 11.3L63.6 350.1z M53.6 338.8l10 10l0.9-0.9l-10-10L53.6 338.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3775" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 347l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 347z M94.4 338.4l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 338.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3777" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 350.1L90 338.8l2.2-2.2l11.3 11.3L101.3 350.1z M91.3 338.8l10 10l0.9-0.9l-10-10L91.3 338.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3779" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M177.2 347l-8.6-8.6l6.8-6.8l8.6 8.6L177.2 347z M169.9 338.4l7.3 7.3l5.5-5.5l-7.3-7.3L169.9 338.4z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3781" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M176.8 350.1l-11.3-11.3l2.2-2.2l11.3 11.3L176.8 350.1z M166.8 338.8l10 10l0.9-0.9l-10-10L166.8 338.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3783"
+            Canvas.Left="39.7"
+            Canvas.Top="366.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -247.508 136.3369" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3785"
+            Canvas.Left="39.5"
+            Canvas.Top="364.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -248.2698 136.0367" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3787" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M43.7 364.6c-2.4-2.3-2.4-6.1 0-8.5c2.3-2.4 6.1-2.4 8.5 0c2.4 2.3 2.4 6.1 0 8.5l0 0  C49.8 366.9 46.1 366.9 43.7 364.6z M51.5 356.8c-2-2-5.2-2-7.2 0s-2 5.2 0 7.2s5.2 2 7.2 0l0 0C53.5 362 53.5 358.8 51.5 356.8  L51.5 356.8z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3789" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M47.2 368.1c-1.9-0.2-3.7-1-5.1-2.2c-3-2.9-3.1-7.8-0.2-10.8c1.5-1.3 3.3-2.1 5.3-2.2V352  c-2.1 0.2-4.1 1.1-5.7 2.5c-3.4 3.3-3.5 8.7-0.2 12.1c1.7 1.4 3.7 2.3 5.9 2.5V368.1L47.2 368.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Rectangle
+            Name="rect3791"
+            Canvas.Left="114.2"
+            Canvas.Top="366.4"
+            Width="2.2"
+            Height="1.1"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -225.7004 189.0233" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle
+            Name="rect3793"
+            Canvas.Left="114"
+            Canvas.Top="364.4"
+            Width="1.1"
+            Height="6.7"
+            Fill="#000000">
+            <Rectangle.RenderTransform>
+                <MatrixTransform Matrix="0.7071 -0.7071 0.7071 0.7071 -226.4581 188.7189" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Path Name="path3795" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M122.2 368.1c-2 0-3.9-0.8-5.3-2.2c-3-3-3.1-7.9-0.1-10.9c1.4-1.5 3.4-2.3 5.4-2.2v-0.9c-4.8 0.1-8.5 4-8.5 8.8  c0 2.2 0.9 4.3 2.5 5.9s3.8 2.5 6 2.5V368.1z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3797" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.7 389.8l-8.6-8.6l6.8-6.8l8.6 8.6L101.7 389.8z M94.4 381.2l7.3 7.3l5.5-5.5l-7.3-7.3L94.4 381.2z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path Name="path3799" Fill="#000000">
+            <Path.Data>
+                <PathGeometry Figures="M101.3 392.9L90 381.6l2.2-2.2l11.3 11.3L101.3 392.9z M91.3 381.6l10 10l0.9-0.9l-10-10L91.3 381.6z" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <DataTemplate x:Key="DirectoryElement" DataType="viewModel:ShowDirectory">
+        <Grid>
+            <TextBlock Foreground="{Binding DirectoryColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                <Run Text="{Binding PresentName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                (<Run Text="{Binding TvDbId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                )</TextBlock>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EpisodeTemplate" DataType="viewModel:MyEpisodes">
+
+        <controls:ClippingBorder
+            Margin="1"
+            VerticalAlignment="Stretch"
+            Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            BorderBrush="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            BorderThickness="1"
+            CornerRadius="5">
+            <Border.Style>
+                <Style>
+                    <Style.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Border.Style>
+            <Grid
+                    Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    controls:GridHelpers.ColumnCount="3"
+                    controls:GridHelpers.StarColumns="0">
+                <TextBlock
+                        Grid.Row="0"
+                        Padding="3,0"
+                        VerticalAlignment="Center"
+                        Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="Black"
+                        FontSize="18"
+                        FontWeight="Bold">
+                        <Run Text="{Binding SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        - <Run Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TextBlock>
+                <Button
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="28"
+                        Height="28"
+                        Command="{Binding OpenFolder}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <controls:ClippingBorder
+                            Background="Green"
+                            BorderBrush="DarkGreen"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                                <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                            </controls:ClippingBorder>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Width="28"
+                        Height="28"
+                        Visibility="{Binding NeedsRename, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                        Command="{Binding RenameFile}">
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <controls:ClippingBorder
+                                    Background="LimeGreen"
+                                    BorderBrush="DarkGreen"
+                                    BorderThickness="1"
+                                    CornerRadius="14">
+
+                                <Rectangle
+                                        Width="20"
+                                        Height="20"
+                                        Fill="White">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clean}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </controls:ClippingBorder>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </controls:ClippingBorder>
+    </DataTemplate>
+    <DataTemplate x:Key="EpisodeTemplateSelected" DataType="viewModel:MyEpisodes">
+
+        <controls:ClippingBorder
+            Margin="1"
+            VerticalAlignment="Stretch"
+            Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            BorderBrush="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            BorderThickness="1"
+            CornerRadius="5">
+            <Border.Style>
+                <Style>
+                    <Style.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Border.Style>
+            <Grid VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid
+                    Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    controls:GridHelpers.ColumnCount="3"
+                    controls:GridHelpers.StarColumns="0">
+                    <TextBlock
+                        Grid.Row="0"
+                        Padding="3,0"
+                        VerticalAlignment="Center"
+                        Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="Black"
+                        FontSize="18"
+                        FontWeight="Bold">
+                        <Run Text="{Binding SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        - <Run Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </TextBlock>
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="28"
+                        Height="28"
+                        Command="{Binding OpenFolder}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <controls:ClippingBorder
+                            Background="Green"
+                            BorderBrush="DarkGreen"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                        </controls:ClippingBorder>
+                                </ControlTemplate>
+                            </Button.Template>
+                    </Button>
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Width="28"
+                        Height="28"
+                        Visibility="{Binding NeedsRename, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                        Command="{Binding RenameFile}">
+                        
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <controls:ClippingBorder
+                                    Background="LimeGreen"
+                                    BorderBrush="DarkGreen"
+                                    BorderThickness="1"
+                                    CornerRadius="14">
+
+                                    <Rectangle
+                                        Width="20"
+                                        Height="20"
+                                        Fill="White">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_clean}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </controls:ClippingBorder>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+
+                <Image
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Width="150"
+                    Stretch="Uniform"
+                    Source="{Binding EpisodeBannerData, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                     />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="{Binding Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="WrapWithOverflow" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Background="{Binding Backcolor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="Black"
+                    FontSize="9">
+                    <Run Text="{Binding FirstAired, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Run Text="{Binding NewFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TextBlock>
+            </Grid>
+        </controls:ClippingBorder>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SeasonTab">
+        <Border
+            Width="45"
+            Margin="0,0,0,-7"
+            BorderBrush="LimeGreen"
+            BorderThickness="1,1,1,0"
+            CornerRadius="5,5,0,0">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="{Binding}"
+                TextAlignment="Center" />
+        </Border>
+    </DataTemplate>
+
+    <Style x:Key="EpisodeStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="ContentTemplate" Value="{StaticResource EpisodeTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="ContentTemplate" Value="{StaticResource EpisodeTemplateSelected}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

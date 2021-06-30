@@ -1,0 +1,83 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:TvDbSearchControl">
+    <DataTemplate x:Key="ItemTemplate" DataType="local:ResultItem">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="33"
+                Height="33"
+                Fill="White">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tv}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <TextBlock
+                VerticalAlignment="Bottom"
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="16"
+                FontFamily="pack://application:,,,/Fonts/#Roboto"
+                FontWeight="Thin">
+                <Run Text="{Binding ShowName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Run
+                    Text="{Binding FirstAired, StringFormat=({0:dd-MMM-yyyy}), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="SelectedTemplate" DataType="local:ResultItem">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Rectangle
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="33"
+                Height="33"
+                Fill="White">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tv}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="18"
+                FontFamily="pack://application:,,,/Fonts/#Roboto"
+                FontWeight="Bold"
+                Text="{Binding ShowName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontFamily="pack://application:,,,/Fonts/#Roboto"
+                FontWeight="Thin"
+                TextAlignment="Justify"
+                Margin="3,0"
+                Text="{Binding OverView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="WrapWithOverflow" />
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="ContainerStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="ContentTemplate" Value="{StaticResource ItemTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="ContentTemplate" Value="{StaticResource SelectedTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MediaTvEpisodeBrowser.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TvDirectories" Type="System.String" Scope="User">
+      <Value Profile="(Default)">q:\MyTv.Library</Value>
+    </Setting>
+    <Setting Name="Current" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MovieRaw" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Q:\movie.sorter|K:\BTSync.Archive\movie</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

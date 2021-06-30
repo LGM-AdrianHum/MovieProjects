@@ -1,0 +1,137 @@
+﻿<Window
+    x:Class="FileGrid.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FileGrid"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:TVDB.Model;assembly=TVDB"
+    xmlns:utility="clr-namespace:TVDB.Utility;assembly=TVDB"
+    Title="MainWindow"
+    Width="525"
+    Height="350"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <DataTemplate x:Key="SearchResultTemplate" DataType="model:Series">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">
+                    <Run Text="{Binding SeriesId}" /> <Run Text="{Binding Name}" />
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    FontSize="9"
+                    Text="{Binding Overview}"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="FileListTemplate" DataType="utility:ParseValue">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="1" Text="{Binding TitleSeasonEpisode}" />
+                <TextBlock Grid.Row="2" Text="{Binding MediaFile.Name}" />
+                <TextBlock Grid.Row="3" Text="{Binding NewFileName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:FileViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" MaxWidth="290" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button
+                Grid.Row="0"
+                HorizontalContentAlignment="Left"
+                FontSize="22"
+                Command="{Binding MoveFile}">
+                <TextBlock HorizontalAlignment="Left" Text="{Binding SelectedFileItem.NewFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Button>
+            <ListBox
+            Grid.Row="1"
+                ItemTemplate="{DynamicResource FileListTemplate}"
+            ItemsSource="{Binding AlLFileList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox 
+                FontSize="20"
+                Grid.Row="0" Text="{Binding SearchName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                Command="{Binding ProcessTvData}"
+                CommandParameter="DoSearch"
+                FontSize="22"
+                Content="Search" />
+            <ListBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                
+                ItemTemplate="{DynamicResource SearchResultTemplate}"
+                ItemsSource="{Binding AllResults, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="{Binding SelectedResultId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Command="{Binding GetShow}"
+                FontSize="22"
+                Content="Set" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding ActualSeries.Series.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding ActualSeries.Series.Overview, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                TextWrapping="Wrap" />
+            <Button
+                Grid.Row="5"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HorizontalContentAlignment="Left"
+                FontSize="22"
+                Command="{Binding MoveFile}">
+                <TextBlock HorizontalAlignment="Left" Text="{Binding SelectedFileItem.NewFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
