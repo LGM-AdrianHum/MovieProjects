@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EpisodeViewer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LibDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">q:\MyTv.Library</Value>
+    </Setting>
+    <Setting Name="RawDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">k:\BtSync.Archive\Tv</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

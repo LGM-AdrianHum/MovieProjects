@@ -1,0 +1,102 @@
+﻿<Window
+    x:Class="SyncDownload.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SyncDownload"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800.145"
+    Height="594.798"
+    mc:Ignorable="d">
+
+    <Window.DataContext>
+        <local:SyncDownVm />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MaxWidth="420" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Menu Grid.ColumnSpan="3">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Grid.Column="0" Header="File">
+                <MenuItem Header="Refresh" Command="{Binding BeginCatalog}"/>
+            </MenuItem>
+            <MenuItem Grid.Column="3" Header="Help"/>
+        </Menu>
+        <Viewbox
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="120"
+            Height="120"
+            Margin="8">
+            <ProgressBar
+                x:Name="Bar"
+                Width="300"
+                Height="300"
+                Style="{StaticResource ProgressBarStyle}"
+                Maximum="{Binding Maximum1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Value="{Binding Download1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Viewbox>
+        <Viewbox
+            Grid.Row="2"
+            Grid.Column="1"
+            Width="120"
+            Height="120"
+            Margin="8">
+            <ProgressBar
+                Width="300"
+                Height="300"
+                Style="{StaticResource ProgressBarStyle}"
+                Maximum="{Binding Maximum2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Minimum="0"
+                Value="{Binding Download2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Viewbox>
+        <DataGrid Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                  Foreground="Yellow"
+                 ItemsSource="{Binding AllFiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <StatusBar Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#66FF0000">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" MinWidth="100"/>
+                            <ColumnDefinition Width="Auto" MinWidth="100" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0" Content="{Binding StatusMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <StatusBarItem Grid.Column="1">
+                <TextBlock TextAlignment="Right" Text="{Binding StatusCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="2">
+                <TextBlock TextAlignment="Right" Text="{Binding StatusCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+
+
+
+</Window>

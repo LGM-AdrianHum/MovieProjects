@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowseMyShows", "BrowseMyShows\BrowseMyShows.csproj", "{F87B9923-37F1-4112-A017-5CD76A6D4919}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvHelpers", "TvHelpers\TvHelpers.csproj", "{72E63538-9CAA-4029-A0AA-9380E759DC26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masonry", "..\WPF-Masonry\Masonry\Masonry.csproj", "{E2BA75BF-C535-46B9-A180-E10533A1C1D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F87B9923-37F1-4112-A017-5CD76A6D4919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87B9923-37F1-4112-A017-5CD76A6D4919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87B9923-37F1-4112-A017-5CD76A6D4919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87B9923-37F1-4112-A017-5CD76A6D4919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E63538-9CAA-4029-A0AA-9380E759DC26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E63538-9CAA-4029-A0AA-9380E759DC26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E63538-9CAA-4029-A0AA-9380E759DC26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E63538-9CAA-4029-A0AA-9380E759DC26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2BA75BF-C535-46B9-A180-E10533A1C1D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2BA75BF-C535-46B9-A180-E10533A1C1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2BA75BF-C535-46B9-A180-E10533A1C1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2BA75BF-C535-46B9-A180-E10533A1C1D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

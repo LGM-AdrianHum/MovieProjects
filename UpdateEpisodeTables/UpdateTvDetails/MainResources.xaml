@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:UpdateTvDetails">
+    
+        <DataTemplate x:Key="UpdateMovieSearch" DataType="local:GoogleResult">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MaxHeight="44"/>
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="14" FontWeight="Bold">
+                <Run Text="{Binding Title}"/>
+
+                </TextBlock>
+                <TextBlock 
+                Grid.Row="1"
+                FontSize="10" >
+                    <Hyperlink Command="{Binding BrowseTo}">
+                        <Run Text="{Binding Link}"/>
+                    </Hyperlink>
+                    </TextBlock>
+                <TextBlock 
+                Grid.Row="2"
+                FontSize="10" Text="{Binding Snippet}" TextWrapping="WrapWithOverflow"/>
+            </Grid>
+        </DataTemplate>
+    
+</ResourceDictionary>

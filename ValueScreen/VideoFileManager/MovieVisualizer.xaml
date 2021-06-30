@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="VideoFileManager.MovieVisualizer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VideoFileManager"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="169*"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="Auto" MinHeight="32"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+            <RowDefinition Height="Auto" MinHeight="12"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" MinWidth="56"/>
+            <ColumnDefinition Width="Auto" MinWidth="56"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding MovieTitle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="0" Grid.Column="1" >Search</Button>
+        <Button Grid.Row="0" Grid.Column="2">Update</Button>
+        <TextBox Grid.Row="2" Grid.Column="0" Margin="0,0,6,3" Text="{Binding MovieTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,6,3" Width="50" Text="{Binding MovieYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button Grid.Row="2" Grid.Column="2" Margin="0,0,0,3" Content="Update"/>
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Set Movie Details From File Name"/>
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Content="Set Movie Details From Directory Name"/>
+        <Separator Grid.Row="6" Grid.ColumnSpan="3"/>
+        <Button Grid.Row="7" Grid.ColumnSpan="3" Content="Update Filename From Details"/>
+        <Button Grid.Row="8" Grid.ColumnSpan="3" Content="Update Directory Name From Details"></Button>
+    </Grid>
+</UserControl>

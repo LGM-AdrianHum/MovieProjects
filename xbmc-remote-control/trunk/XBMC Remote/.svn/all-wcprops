@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/9/trunk/XBMC%20Remote
+END
+Program.cs
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/2/trunk/XBMC%20Remote/Program.cs
+END
+MainView.resx
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6/trunk/XBMC%20Remote/MainView.resx
+END
+Settings.resx
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/7/trunk/XBMC%20Remote/Settings.resx
+END
+MainView.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/8/trunk/XBMC%20Remote/MainView.Designer.cs
+END
+MainView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/8/trunk/XBMC%20Remote/MainView.cs
+END
+Settings.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/7/trunk/XBMC%20Remote/Settings.Designer.cs
+END
+app.config
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6/trunk/XBMC%20Remote/app.config
+END
+Settings.cs
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/7/trunk/XBMC%20Remote/Settings.cs
+END
+MyTreeView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6/trunk/XBMC%20Remote/MyTreeView.cs
+END
+XBMC Remote.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/7/trunk/XBMC%20Remote/XBMC%20Remote.csproj
+END

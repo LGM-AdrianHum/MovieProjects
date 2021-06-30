@@ -1,0 +1,56 @@
+﻿<controls:MetroWindow x:Class="VideoFileManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoFileManager"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="525">
+ <Window.InputBindings>
+     <KeyBinding Command="{Binding DoFilter}" Key="OemQuestion" Modifiers="Control"></KeyBinding>
+ </Window.InputBindings>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="22"/>
+                <ColumnDefinition/>
+            
+                
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Button Content="All" CommandParameter="All"/>
+            <Button Content="#" CommandParameter="#"/>
+                <Button Content="A" CommandParameter="A"/>
+                <Button Content="B" CommandParameter="B"/>
+                <Button Content="C" CommandParameter="C"/>
+                <Button Content="D" CommandParameter="D"/>
+                <Button Content="E" CommandParameter="E"/>
+                <Button Content="F" CommandParameter="F"/>
+                <Button Content="G" CommandParameter="G"/>
+                <Button Content="H" CommandParameter="H"/>
+                <Button Content="I" CommandParameter="I"/>
+                <Button Content="J" CommandParameter="J"/>
+                <Button Content="K" CommandParameter="K"/>
+                <Button Content="L" CommandParameter="L"/>
+                <Button Content="M" CommandParameter="M"/>
+                <Button Content="N" CommandParameter="N"/>
+                <Button Content="O" CommandParameter="O"/>
+                <Button Content="P" CommandParameter="P"/>
+                <Button Content="Q" CommandParameter="Q"/>
+                <Button Content="R" CommandParameter="R"/>
+                <Button Content="S" CommandParameter="S"/>
+                <Button Content="T" CommandParameter="T"/>
+                <Button Content="U" CommandParameter="U"/>
+                <Button Content="V" CommandParameter="V"/>
+                <Button Content="W" CommandParameter="W"/>
+                <Button Content="X" CommandParameter="X"/>
+                <Button Content="Y" CommandParameter="Y"/>
+                <Button Content="Z" CommandParameter="Z"/>
+            </StackPanel>
+        </Grid>
+        <controls:ProgressRing IsActive="{Binding IsActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:ProgressRing>
+    </Grid>
+    
+</controls:MetroWindow>
+

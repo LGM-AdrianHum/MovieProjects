@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateEpisodeTables", "UpdateEpisodeTables\UpdateEpisodeTables.csproj", "{78D5D9E4-27E6-4D7E-A1F4-C8BF02FCC042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVDB", "..\TVDB\TVDB.csproj", "{A265B83F-495E-43BD-B1F5-C89B58618A84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTvDetails", "UpdateTvDetails\UpdateTvDetails.csproj", "{02DBEAE3-C7D7-478A-8CD4-3D12515B2A6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Relays", "..\Relays\Relays.csproj", "{11178F46-E4D5-4AFA-A3F9-17B238816750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckTv", "CheckTv\CheckTv.csproj", "{13F07567-7CB7-4503-A320-4C1176F70780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpisodeViewer", "EpisodeViewer\EpisodeViewer.csproj", "{B7A10519-E7DC-4B35-9BFE-92EE44DA0475}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvDirectoryView", "TvDirectoryView\TvDirectoryView.csproj", "{C89FA5E8-3E55-4959-80C1-A40E0A527A1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78D5D9E4-27E6-4D7E-A1F4-C8BF02FCC042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D5D9E4-27E6-4D7E-A1F4-C8BF02FCC042}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D5D9E4-27E6-4D7E-A1F4-C8BF02FCC042}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D5D9E4-27E6-4D7E-A1F4-C8BF02FCC042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02DBEAE3-C7D7-478A-8CD4-3D12515B2A6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02DBEAE3-C7D7-478A-8CD4-3D12515B2A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02DBEAE3-C7D7-478A-8CD4-3D12515B2A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02DBEAE3-C7D7-478A-8CD4-3D12515B2A6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11178F46-E4D5-4AFA-A3F9-17B238816750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11178F46-E4D5-4AFA-A3F9-17B238816750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11178F46-E4D5-4AFA-A3F9-17B238816750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11178F46-E4D5-4AFA-A3F9-17B238816750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13F07567-7CB7-4503-A320-4C1176F70780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F07567-7CB7-4503-A320-4C1176F70780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F07567-7CB7-4503-A320-4C1176F70780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F07567-7CB7-4503-A320-4C1176F70780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7A10519-E7DC-4B35-9BFE-92EE44DA0475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A10519-E7DC-4B35-9BFE-92EE44DA0475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A10519-E7DC-4B35-9BFE-92EE44DA0475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A10519-E7DC-4B35-9BFE-92EE44DA0475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C89FA5E8-3E55-4959-80C1-A40E0A527A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C89FA5E8-3E55-4959-80C1-A40E0A527A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C89FA5E8-3E55-4959-80C1-A40E0A527A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C89FA5E8-3E55-4959-80C1-A40E0A527A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

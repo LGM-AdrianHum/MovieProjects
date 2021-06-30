@@ -1,0 +1,106 @@
+﻿<UserControl
+    x:Class="EpisodeViewer.SearchWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EpisodeViewer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:EpisodeViewer.ViewModel"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <viewModel:GoogleSearcherVm/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="UpdateMovieSearch" DataType="viewModel:GoogleResult">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="14" FontWeight="Bold">
+                    <Run Text="{Binding Title}" />
+
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    FontSize="10"
+                    Text="{Binding Link}" />
+                <TextBlock
+                    Grid.Row="2"
+                    FontSize="10"
+                    Text="{Binding Snippet}"
+                    TextWrapping="WrapWithOverflow" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button
+                MinWidth="30"
+                Command="{Binding ExecuteQuery}"
+                CommandParameter="Google">
+                <Rectangle
+                    Width="22"
+                    Height="22"
+                    Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_google}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button
+                MinWidth="30"
+                Command="{Binding ExecuteQuery}"
+                CommandParameter="tmdb">
+                <Rectangle
+                    Width="22"
+                    Height="22"
+                    Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tv_news}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="0" Grid.Column="2" 
+                 Width="60"
+                 Margin="4,0,0,0"
+                 Text="{Binding SelectedId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="0" Grid.Column="3" Command="{Binding UpdateParent}">
+            <Rectangle
+                    Width="22"
+                    Height="22"
+                    Fill="White">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tv}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+
+        </Button>
+        <ListBox
+            Grid.Row="1"
+            Grid.ColumnSpan="4"
+            Grid.Column="0"
+            Height="322"
+            Background="RosyBrown"
+            ItemTemplate="{DynamicResource UpdateMovieSearch}"
+            ItemsSource="{Binding AllGoogleResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding GoogleSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+             />
+    </Grid>
+</UserControl>

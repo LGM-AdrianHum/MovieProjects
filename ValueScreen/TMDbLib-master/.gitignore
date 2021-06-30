@@ -1,0 +1,11 @@
+# Temporary Folders
+bin/
+obj/
+packages/
+
+# VS
+.vs/
+*.user
+
+# Project specific
+TestApplication/config.json

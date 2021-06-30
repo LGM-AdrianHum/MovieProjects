@@ -1,0 +1,292 @@
+﻿<controls:MetroWindow
+    x:Class="EpisodeViewer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EpisodeViewer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:EpisodeViewer.ViewModel"
+    Title="MainWindow"
+    Width="943.786"
+    Height="350"
+    mc:Ignorable="d">
+    <Window.Style>
+        <Style>
+            <Setter Property="Border.BorderThickness" Value="0" />
+            <Setter Property="Border.BorderBrush" Value="Transparent" />
+            <Style.Resources>
+                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                    <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto" />
+                </Style>
+                <Style TargetType="Grid">
+                    <Setter Property="ShowGridLines" Value="False" />
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Style>
+    <Window.DataContext>
+        <viewModel:MainVm />
+    </Window.DataContext>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout
+                x:Name="LeftFlyout"
+                Width="325"
+                Header="TV Directories"
+                IsOpen="{Binding LeftIsOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Position="Left" />
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding Refresh}" />
+        <KeyBinding
+            Key="F3"
+            Command="{Binding TriggerWindow}"
+            CommandParameter="LeftWindow" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid ShowGridLines="False">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Menu
+                Grid.Row="0"
+                Grid.Column="0"
+                FontSize="18">
+                <MenuItem Header="File">
+                    <MenuItem Command="{Binding Refresh}" Header="Refresh" />
+                    <MenuItem Command="{Binding OpenCurrentDirectory}" Header="Open Folder ..."/>
+                    <MenuItem Command="{Binding RebuildDirectoryInfo}" Header="Download Data"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Missing Data" ItemsSource="{Binding NoDataMenus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+                            <Setter Property="Command" Value="{Binding MissingData}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="View">
+                    <MenuItem Click="MenuItem_OnClick" Header="Change Grid" />
+                    <MenuItem
+                        Click="MenuItem_OnClick"
+                        Header="Open Menu"
+                        IsCheckable="True"
+                        IsChecked="{Binding LeftIsOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </MenuItem>
+
+            </Menu>
+            <TabControl x:Name="MainTab" Grid.Row="1">
+                <TabItem x:Name="LeftTab" Header="Show" />
+                <TabItem x:Name="RightTab" Header="Files" />
+            </TabControl>
+            <Grid x:Name="MainGrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid
+                    x:Name="DirectoryListGrid"
+                    Grid.Row="1"
+                    Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBox
+                        x:Name="XSearch"
+                        Grid.Row="0"
+                        FontSize="16"
+                        Text="{Binding QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ListBox
+                        Grid.Row="1"
+                        Width="320"
+                        ItemContainerStyle="{StaticResource DirListStyle}"
+                        ItemsSource="{Binding EveryShowView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        SelectedItem="{Binding SelectedDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+                <Grid
+                    x:Name="ShowDetailsGrid"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        FontSize="32"
+                        FontWeight="Thin"
+                        Text="{Binding TvDbData.Series.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <local:ClippingBorder
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="100"
+                        Margin="2,4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+                        <Grid>
+                            <Image
+                                Width="100"
+                                VerticalAlignment="Top"
+                                Source="{Binding PosterData, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock
+                                Width="100"
+                                Margin="-19,14,0,0"
+                                Padding="16,1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Background="#CCFF0000"
+                                FontWeight="Bold"
+                                RenderTransformOrigin="0.5,0.5"
+                                Text="{Binding Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextAlignment="Center">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="-42.098" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                        </Grid>
+                    </local:ClippingBorder>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        Text="{Binding TvDbData.Series.Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextAlignment="Justify"
+                        TextWrapping="WrapWithOverflow" />
+
+                    <StackPanel
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding NextAiredVisible, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="Next Aired" />
+                        <Border
+                            Width="60"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            Background="AntiqueWhite"
+                            BorderBrush="#FF888888"
+                            BorderThickness="4">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="9" />
+                            </Border.Effect>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock
+                                    Padding="0,2"
+                                    Background="LightCoral"
+                                    Text="{Binding NextAiredMonth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    TextAlignment="Center" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    FontSize="14"
+                                    FontWeight="Thin"
+                                    Text="{Binding NextAiredDay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    TextAlignment="Center" />
+
+                                <TextBlock
+                                    Margin="0,-4,0,0"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Text="{Binding NextAiredNum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    TextAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Visibility="{Binding NextAiredVisible, Converter={StaticResource BoolToVis}}">
+                        <TextBlock>
+                            <Run Foreground="White" Text="{Binding NextAired.SeasonEpisode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            :<Run Foreground="LightGreen" Text="{Binding NextAired.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding NextAired.Overview, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+
+                    <Border
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BorderBrush="#55FFFF00"
+                        BorderThickness="0,1">
+                        <ListBox
+                            FontSize="18"
+                            ItemsSource="{Binding SeasonNumbers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            SelectedItem="{Binding SelectedSeason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel
+                                        Orientation="Horizontal"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ListBox>
+                    </Border>
+                    <ListBox
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        AlternationCount="2"
+                        ItemContainerStyle="{StaticResource EpListStyle}"
+                        ItemsSource="{Binding AllEpisodesView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+                <ListBox
+                    x:Name="FileListBox"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    AlternationCount="2"
+                    ItemTemplate="{DynamicResource DataTemplate1}"
+                    ItemsSource="{Binding AllFilesView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+            </Grid>
+        </Grid>
+        <local:SearchWindow
+            Width="480"
+            Height="300"
+            VerticalAlignment="Center"
+            DataContext="{Binding SearchVector}"
+            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.SearchIsVisible, Converter={StaticResource BoolToVis}}" />
+    </Grid>
+
+</controls:MetroWindow>
+
+
+

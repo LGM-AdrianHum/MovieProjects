@@ -1,0 +1,48 @@
+﻿<Window
+    x:Class="BrowseMyShows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BrowseMyShows"
+    xmlns:masonry="clr-namespace:Masonry;assembly=Masonry"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfTextBoxAutoComplete="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+    Title="MainWindow"
+    Width="525"
+    Height="350"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBox
+            Width="250"
+            Height="40"
+            HorizontalAlignment="Left"
+            wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding AllDirs}"
+            wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteStringComparison="InvariantCultureIgnoreCase"
+            Text="{Binding TestText, UpdateSourceTrigger=PropertyChanged}" />
+        <masonry:MasonryControl
+            Grid.Row="1"
+            Background="#E3E3E3"
+            ItemTemplate="{DynamicResource FileTemplate}"
+            ItemsSource="{Binding AllFiles, UpdateSourceTrigger=PropertyChanged}"
+            Spacing="5" >
+            <masonry:MasonryControl.Resources>
+                <DataTemplate x:Key="FileTemplate" DataType="local:RawFileData">
+                    <Border Width="200"
+                            Background="Aqua"
+                             Height="120">
+
+                        
+                    </Border>
+                </DataTemplate>
+            </masonry:MasonryControl.Resources>
+        </masonry:MasonryControl>
+    </Grid>
+</Window>
