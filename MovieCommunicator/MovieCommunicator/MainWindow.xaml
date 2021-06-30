@@ -1,0 +1,31 @@
+﻿<controls:MetroWindow
+    x:Class="MovieCommunicator.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MovieCommunicator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    Title="MainWindow"
+    Width="525"
+    Height="350"
+    FontFamily="pack://application:,,,/Fonts/#Roboto"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MovieViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <ListBox 
+            ItemsSource="{Binding SelectionOfMovies}" ItemTemplate="{DynamicResource SelectionOfMoviesTemplate}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+        </ListBox>
+    </Grid>
+</controls:MetroWindow>
+
+
+

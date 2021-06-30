@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MovieCommunicator">
+    <DataTemplate x:Key="SelectionOfMoviesTemplate" DataType="local:MovieItem">
+        <local:ClippingBorder
+            Width="140"
+            Height="280"
+            Background="AliceBlue"
+            BorderBrush="DarkGreen"
+            BorderThickness="5"
+            CornerRadius="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image
+                    MaxHeight="250"
+                    VerticalAlignment="Top"
+                    Source="poster.jpg"
+                    Stretch="Uniform" />
+                <TextBlock
+                    Grid.Row="1" Margin="3,0"
+                    FontSize="14"
+                    FontWeight="Black"
+                    Foreground="Black"
+                    FontFamily="pack://application:,,,/Fonts/#Roboto"
+                    Text="{Binding Name, FallbackValue=No Name Found}"
+                    TextWrapping="Wrap" />
+
+
+                <TextBlock Grid.Row="2"
+                           Foreground="Black"
+                           FontFamily="pack://application:,,,/Fonts/#Roboto"
+                           Text="{Binding ReleaseYear, FallbackValue=1990}"/>
+            </Grid>
+        </local:ClippingBorder>
+    </DataTemplate>
+
+</ResourceDictionary>
