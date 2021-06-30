@@ -191,6 +191,7 @@ namespace MovieNamer
 
         public void SetTargetFilename()
         {
+            if (_movie == null) return;
             if (_movie.ReleaseDate != null)
                 SafeFileName =
                     string.Format("{0} ({1}){2}",
@@ -204,6 +205,7 @@ namespace MovieNamer
         public void RenameFile()
         {
             var root = System.IO.Path.GetPathRoot(DropFileName);
+            if (root == null) return;
             var newpath = Path.Combine(root, "_watch",
                 "MyMovies." + SafeFileName.Substring(0, 1),
                 Path.GetFileNameWithoutExtension(SafeFileName));
